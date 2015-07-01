@@ -6,9 +6,20 @@
 %fitcoff nx3 matrix
 %xypoints nx2 matrix
 %
-function [resid]=resid_anlysis(fitcoff, xypoints)
+function [resid] = fit_anlysis(xypoints)
     xypoints(:,1) = xypoints(:,1) - min(xypoints(:,1));
     resid = calc_residual(fitcoff(2),fitcoff(1),fitcoff(3), xypoints(:,1), xypoints(:,2));
+end
+
+function [fitcoff] = fitdata(xypoints)
+
+end
+
+function [] = chi_sq(obs,expt)
+    if length(obs)~=length(expt)
+        error('obsserved array not the same length as expected array for chi squared')
+    else
+        n = length(obs)
 end
 
 function [resid]=calc_residual(coffsq,cofflin, coffc,x,y)
