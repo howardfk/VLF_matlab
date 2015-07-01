@@ -15,8 +15,8 @@
 %
 %Equation for save keeping later delate if forgoten
 %resid = calc_residual(fitcoff(2),fitcoff(1),fitcoff(3), xypoints(:,1), xypoints(:,2));
-function [resid] = fit_anlysis(xypoints)
-    [coff_1, coff_2, inv_coff_1, inv_coff2] = fitdata(xypoints);
+function [coff_1, coff_2, inv_coff_1, inv_coff2, chi_norm] = fit_anlysis(xypoints)
+    [coff_1, coff_2, inv_coff_1, inv_coff2, chi_norm] = fitdata(xypoints);
 end
 
 function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_norm] = fitdata(xypoints)
