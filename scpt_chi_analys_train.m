@@ -12,7 +12,7 @@
 data_in = 'click_data_train_v2.mat';
 load(data_in);
 datacount = length(train)
-for i=1:2%datacount
+for i=1:datacount
     temp_click_shape = train(i).click_shape;
     x = temp_click_shape(:,1) - min(temp_click_shape(:,1));
     y = temp_click_shape(:,2);
@@ -25,11 +25,11 @@ for i=1:2%datacount
     %coff_2 2xn matrix: 1xn = reg second order, 2xn = 1/sqrt firt odrer
     %residn gives you the nth order fit 
     %row-1 gives you 'regulre' values row-2 gives you inv sqrt y
-    [coff_1, coff_2, resid1, resid2, chi_norm] = fit_anlysis(temp_click_shape);
+    [coff_1, coff_2, resid1, resid2, chi_norm, r] = fit_anlysis(temp_click_shape);
     list_coff_1(i,:,:) = coff_1;
     list_coff_2(i,:,:) = coff_2;
     list_chi_norm(i,:) = chi_norm;
-
+    list_r(i,:) = r;
 
     %Making residual graphs
     fig1 = figure(1)
@@ -44,6 +44,7 @@ for i=1:2%datacount
     s1.MarkerEdgeColor = [0 0 1]
     s2.MarkerEdgeColor = [1 0 0]
     s3.MarkerEdgeColor = [0.5 0 0.1]
+    hold off;
 
     subplot(1,2,2)
     s4= scatter(x,resid1(:,2),'x')
@@ -56,6 +57,7 @@ for i=1:2%datacount
     s4.MarkerEdgeColor = [0 0 1]
     s5.MarkerEdgeColor = [1 0 0]
     s6.MarkerEdgeColor = [0.5 0 0.1]
+    hold off;
     path = 'Fits/'
     filename = ['risid_' num2str(i)]
     saveas(fig1,[path filename],'png')
@@ -91,3 +93,7 @@ title('histogram of chi squred for each fit')
 legend([h3 h4],'linear inverse sqrt','secondorder inverse sqrt')
 xlabel('Ratio of Chi and number of points')
 ylabel('count')
+
+figure(4)
+h5 = histogram(list_r(:,1))
+title('first order fit to xy data')
