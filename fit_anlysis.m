@@ -30,27 +30,27 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints)
     inv_coff_2 = polyfit(x,yinv,2);
 
     %Chi value for first order polyfit
-    expt = polyval(coff_1,x)
-    chi_arr(1) = chi_sq(y,expt)
+    expt = polyval(coff_1,x);
+    chi_arr(1) = chi_sq(y,expt);
     %Chi value for second order order polyfit
-    expt = polyval(coff_2,x)
-    chi_arr(2) = chi_sq(y,expt)
+    expt = polyval(coff_2,x);
+    chi_arr(2) = chi_sq(y,expt);
     %Chi value for first oder order order polyfit inverse sqrt function
-    expt = polyval(inv_coff_1,x)
-    chi_arr(3) = chi_sq(yinv,expt)
+    expt = polyval(inv_coff_1,x);
+    chi_arr(3) = chi_sq(yinv,expt);
     %Chi value for first oder order order polyfit inverse sqrt function
-    expt = polyval(inv_coff_2,x)
-    chi_arr(4) = chi_sq(yinv,expt)
+    expt = polyval(inv_coff_2,x);
+    chi_arr(4) = chi_sq(yinv,expt);
 end
 
 function [chi_norm] = chi_sq(obs,expt)
     if length(obs)~=length(expt)
         error('obsserved array not the same length as expected array for chi squared')
     else
-        n = length(obs)
-        resid = obs-expt
-        std_sq = (std(obs))^2
-        chi = (resid'*resid)./std_sq
-        chi_norm = chi./n
+        n = length(obs);
+        resid = obs-expt;
+        std_sq = (std(obs))^2;
+        chi = (resid'*resid)./std_sq;
+        chi_norm = chi./n;
     end
 end
