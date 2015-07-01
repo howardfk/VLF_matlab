@@ -36,10 +36,10 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2] = fit
     inv_coff_2 = polyfit(x,yinv,2);
 
     % residn gives you the nth order fit col-1 gives you 'regulre' values col-2 gives you inv sqrt y
-    resid1(1,:) = y - polyval(coff_1); 
-    resid1(2,:)= yinv - polyval(inv_coff_1); 
-    resid2(1,:) = y - polyval(coff_2); 
-    resid2(2,:) = yinv - polyval(inv_coff_2); 
+    resid1(1,:) = y - polyval(coff_1,x); 
+    resid1(2,:)= yinv - polyval(inv_coff_1,x); 
+    resid2(1,:) = y - polyval(coff_2,x); 
+    resid2(2,:) = yinv - polyval(inv_coff_2,x); 
 
     %Chi value for first order polyfit
     expt = polyval(coff_1,x);
