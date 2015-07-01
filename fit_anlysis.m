@@ -41,6 +41,7 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2] = fit
     resid2(:,1)= y - polyval(coff_2,x); 
     resid2(:,2) = yinv - polyval(inv_coff_2,x); 
 
+
     %Chi value for first order polyfit
     expt = polyval(coff_1,x);
     chi_arr(1) = chi_sq(y,expt);
@@ -54,6 +55,14 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2] = fit
     expt = polyval(inv_coff_2,x);
     chi_arr(4) = chi_sq(yinv,expt);
 end
+
+function [r_sqr] = rsqr(resid,ypoints)
+    SS = resid'*resid;
+    SSm = (mean(ypoints) - ypoints)'*(mean(ypoints)-ypoints);
+    r_sqr = 1-SS/SSm;
+
+end
+
 
 function [chi_norm] = chi_sq(obs,expt)
     if length(obs)~=length(expt)
