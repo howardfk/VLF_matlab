@@ -12,7 +12,7 @@
 data_in = 'click_data_train_v2.mat';
 load(data_in);
 datacount = length(train)
-for i=1:datacount
+for i=1:2%datacount
     temp_click_shape = train(i).click_shape;
     x = temp_click_shape(:,1) - min(temp_click_shape(:,1));
     y = temp_click_shape(:,2);
@@ -23,14 +23,42 @@ for i=1:datacount
 
     %coff_1 2xn matrix: 1xn = reg first order, 2xn = 1/sqrt first order
     %coff_2 2xn matrix: 1xn = reg second order, 2xn = 1/sqrt firt odrer
-    [coff_1, coff_2, resid1, resid2, chi_norm]= fit_anlysis(temp_click_shape);
-    list_coff_1(i,:,:) = coff_1';
-    list_coff_2(i,:,:) = coff_2';
-    list_chi_norm(i,:) = chi_norm';
+    %residn gives you the nth order fit 
+    %row-1 gives you 'regulre' values row-2 gives you inv sqrt y
+    [coff_1, coff_2, resid1, resid2, chi_norm] = fit_anlysis(temp_click_shape);
+    list_coff_1(i,:,:) = coff_1;
+    list_coff_2(i,:,:) = coff_2;
+    list_chi_norm(i,:) = chi_norm;
+
 
     %Making residual graphs
-    figure(1)
-    scatter()
+    fig1 = figure(1)
+    subplot(1,2,1)
+    s1 = scatter(x,resid1(:,1),'x')
+    hold on;
+    s2 = scatter(x,resid2(:,1),'*')
+    s3 = plot(x,zeros(length(x),1))
+    title('Residule plots with first and second order fits')
+    xlabel('time in seconds')
+    ylabel('residule values in kHz')
+    s1.MarkerEdgeColor = [0 0 1]
+    s2.MarkerEdgeColor = [1 0 0]
+    s3.MarkerEdgeColor = [0.5 0 0.1]
+
+    subplot(1,2,2)
+    s4= scatter(x,resid1(:,2),'x')
+    hold on;
+    s5 = scatter(x,resid2(:,2),'*')
+    s6 = plot(x,zeros(length(x),1))
+    title('Residule plots with 1/sqrt(freq) first and second order')
+    xlabel('time in seconds')
+    ylabel('residule values in 1/sqrt(kHz)')
+    s4.MarkerEdgeColor = [0 0 1]
+    s5.MarkerEdgeColor = [1 0 0]
+    s6.MarkerEdgeColor = [0.5 0 0.1]
+    path = 'Fits/'
+    filename = ['risid_' num2str(i)]
+    saveas(fig1,[path filename],'png')
     set(gcf,'Visible','off')
 
 end 
@@ -41,7 +69,7 @@ test3 = list_chi_norm(:,3);
 test4 = list_chi_norm(:,4); 
 
 binning = [0:0.010:0.35]
-fig1 = figure(1)
+fig1 = figure(2)
 h1=histogram(test1,binning)
 hold on
 h2=histogram(test2,binning)
@@ -52,7 +80,7 @@ ylabel('count')
 h1.FaceColor = [1 0 0]
 h2.FaceColor = [1 1 0]
 
-figure(2)
+figure(3)
 h3=histogram(test3,binning)
 hold on
 h4=histogram(test4,binning)
