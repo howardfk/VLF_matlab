@@ -7,7 +7,7 @@
 %
 %fitcoff nx3 matrix
 %xypoints nx2 matrix
-%chi_norm is a vector of chi/number_points for each fit
+%chi_arr is a vector of chi/number_points for each fit
 %1=first order
 %2=seconed order
 %3=first order inverse sqrt
@@ -15,11 +15,11 @@
 %
 %Equation for save keeping later delate if forgoten
 %resid = calc_residual(fitcoff(2),fitcoff(1),fitcoff(3), xypoints(:,1), xypoints(:,2));
-function [coff_1, coff_2, inv_coff_1, inv_coff2, chi_norm] = fit_anlysis(xypoints)
-    [coff_1, coff_2, inv_coff_1, inv_coff2, chi_norm] = fitdata(xypoints);
+function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fit_anlysis(xypoints)
+    [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints);
 end
 
-function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_norm] = fitdata(xypoints)
+function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints)
     yinv = (xypoints(:,2)).^(-0.5);
     y = xypoints(:,2);
     x = xypoints(:,1);
@@ -31,16 +31,16 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_norm] = fitdata(xypoints)
 
     %Chi value for first order polyfit
     expt = polyval(coff_1,x)
-    chi_norm(1) = chai_sq(x,expt)
+    chi_arr(1) = chi_sq(y,expt)
     %Chi value for second order order polyfit
     expt = polyval(coff_2,x)
-    chi_norm(2) = chai_sq(x,expt)
+    chi_arr(2) = chi_sq(y,expt)
     %Chi value for first oder order order polyfit inverse sqrt function
     expt = polyval(yinv_coff_1,x)
-    chi_norm(3) = chai_sq(x,expt)
+    chi_arr(3) = chi_sq(yinv,expt)
     %Chi value for first oder order order polyfit inverse sqrt function
     expt = polyval(yinv_coff_2,x)
-    chi_norm(4) = chai_sq(x,expt)
+    chi_arr(4) = chi_sq(yinv,expt)
 end
 
 function [chi_norm] = chi_sq(obs,expt)
@@ -49,8 +49,8 @@ function [chi_norm] = chi_sq(obs,expt)
     else
         n = length(obs)
         resid = obs-expt
-        std_sq = std(obs)^2
-        chi = (resid*resid')/std_sq
-        chi_norm = chi/n
+        std_sq = (std(obs))^2
+        chi = (resid'*resid)./std_sq
+        chi_norm = chi./n
     end
 end
