@@ -54,8 +54,3 @@ function [chi_norm] = chi_sq(obs,expt)
         chi_norm = chi/n
     end
 end
-
-function [resid]=calc_residual(coffsq,cofflin, coffc,x,y)
-    yfit = coffsq.*x.^2 + cofflin.*x + coffc;
-    resid = sqrt((yfit - y).^2); %array of resid
-end
