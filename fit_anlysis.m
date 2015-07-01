@@ -15,8 +15,8 @@
 %
 %Equation for save keeping later delate if forgoten
 %resid = calc_residual(fitcoff(2),fitcoff(1),fitcoff(3), xypoints(:,1), xypoints(:,2));
-function [coff_firstorder, coff_secondorder, resid1, resid2, chi_arr] = fit_anlysis(xypoints)
-    [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2] = fitdata(xypoints);
+function [coff_firstorder, coff_secondorder, resid1, resid2, chi_arr, r] = fit_anlysis(xypoints)
+    [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2, r] = fitdata(xypoints);
     % 1 is the linear
     % 2 is the linear inv sqrt
     coff_firstorder(1,:) = coff_1;
@@ -25,7 +25,7 @@ function [coff_firstorder, coff_secondorder, resid1, resid2, chi_arr] = fit_anly
     coff_secondorder(2,:) = inv_coff_2;
 end
 
-function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2] = fitdata(xypoints)
+function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2, r] = fitdata(xypoints)
     yinv = (xypoints(:,2)).^(-0.5);
     y = xypoints(:,2);
     x = xypoints(:,1);
@@ -41,6 +41,10 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr, resid1, resid2] = fit
     resid2(:,1)= y - polyval(coff_2,x); 
     resid2(:,2) = yinv - polyval(inv_coff_2,x); 
 
+    r(1) = rsqr(resid1(:,1),y);
+    r(2) = rsqr(resid2(:,1),y);
+    r(3) = rsqr(resid1(:,2),yinv);
+    r(4) = rsqr(resid2(:,2),yinv);
 
     %Chi value for first order polyfit
     expt = polyval(coff_1,x);
@@ -60,7 +64,6 @@ function [r_sqr] = rsqr(resid,ypoints)
     SS = resid'*resid;
     SSm = (mean(ypoints) - ypoints)'*(mean(ypoints)-ypoints);
     r_sqr = 1-SS/SSm;
-
 end
 
 
