@@ -20,11 +20,6 @@ for i=1:datacount
     time_dur(i) = max(x) - min(x); %time_dur(n) = nth trains time durtion 
     bandwidth(i) = max(y) - min(y); %bandwith(n) = nth trains bandwidth
     UT(i) = train(i).UT;
-
-    p=polyfit(x,y,2);
-    fitcoff(i,1) = p(2); %fitcoff(n,1) = linear coff  x
-    fitcoff(i,2) = p(1); %fitcoff(n,2) = squred coff x^2
-    fitcoff(i,3) = p(3); %fitcoff(n,3) = constent
 end 
 
 %resid_anlysis(fitcoff, click_shape);
