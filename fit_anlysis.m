@@ -26,8 +26,8 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints)
 
     coff_1 = polyfit(x,y,1);
     coff_2 =  polyfit(x,y,2);
-    yinv_coff_1 = polyfit(x,yinv,1);
-    yinv_coff_2 = polyfit(x,yinv,2);
+    inv_coff_1 = polyfit(x,yinv,1);
+    inv_coff_2 = polyfit(x,yinv,2);
 
     %Chi value for first order polyfit
     expt = polyval(coff_1,x)
@@ -36,10 +36,10 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints)
     expt = polyval(coff_2,x)
     chi_arr(2) = chi_sq(y,expt)
     %Chi value for first oder order order polyfit inverse sqrt function
-    expt = polyval(yinv_coff_1,x)
+    expt = polyval(inv_coff_1,x)
     chi_arr(3) = chi_sq(yinv,expt)
     %Chi value for first oder order order polyfit inverse sqrt function
-    expt = polyval(yinv_coff_2,x)
+    expt = polyval(inv_coff_2,x)
     chi_arr(4) = chi_sq(yinv,expt)
 end
 
