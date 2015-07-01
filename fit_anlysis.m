@@ -17,6 +17,7 @@
 %resid = calc_residual(fitcoff(2),fitcoff(1),fitcoff(3), xypoints(:,1), xypoints(:,2));
 function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fit_anlysis(xypoints)
     [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints);
+
 end
 
 function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints)
@@ -28,6 +29,11 @@ function [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_arr] = fitdata(xypoints)
     coff_2 =  polyfit(x,y,2);
     inv_coff_1 = polyfit(x,yinv,1);
     inv_coff_2 = polyfit(x,yinv,2);
+
+    resid1 = y - polyval(coff_1); 
+    resid2 = y - polyval(coff_2); 
+    resid1_inv = yinv - polyval(inv_coff_1); 
+    resid2_inv = yinv - polyval(inv_coff_2); 
 
     %Chi value for first order polyfit
     expt = polyval(coff_1,x);
@@ -50,7 +56,7 @@ function [chi_norm] = chi_sq(obs,expt)
         n = length(obs);
         resid = obs-expt;
         std_sq = (std(obs))^2;
-        chi = (resid'*resid)./std_sq;
-        chi_norm = chi./n;
+        chi = (resid'*resid)/std_sq;
+        chi_norm = chi/n;
     end
 end
