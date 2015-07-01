@@ -20,5 +20,21 @@ for i=1:datacount
     time_dur(i) = max(x) - min(x); %time_dur(n) = nth trains time durtion 
     bandwidth(i) = max(y) - min(y); %bandwith(n) = nth trains bandwidth
     UT(i) = train(i).UT;
+
+    [coff_1, coff_2, inv_coff_1, inv_coff_2, chi_norm]= fit_anlysis(temp_click_shape)
+    list_coff_1(i,:) = coff_1'
+    list_coff_2(i,:) = coff_2'
+    list_inv_coff_1(i,:) = inv_coff_1'
+    list_inv_coff_2(i,:) = inv_coff_2'
+    list_chi_norm(i,:) = chi_norm'
 end 
+
+figure(1)
+hist(list_chi_norm(:,1))
+figure(2)
+hist(list_chi_norm(:,2))
+figure(3)
+hist(list_chi_norm(:,3))
+figure(4)
+hist(list_chi_norm(:,4))
 
